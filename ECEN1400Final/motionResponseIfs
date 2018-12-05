@@ -1,0 +1,90 @@
+#include <Servo.h>
+boolean trigger = false;
+float pos = 0;
+
+int valSlot0 = 0; 
+int valSlot1 = 0;
+int valSlot2 = 0;
+int valSlot3 = 0;
+int valSlot4 = 0;
+
+int start = 40;
+int valChange = 17;
+
+Servo myservo;  // create servo object to control a servo
+// twelve servo objects can be created on most boards
+
+void setup() {
+  Serial.begin(9600);
+  pinMode(A0, INPUT);
+  pinMode(A1, INPUT);
+  pinMode(A2, INPUT);
+  pinMode(A3, INPUT);
+  pinMode(A4, INPUT);
+  myservo.attach(9);  // attaches the servo on pin 9 to the servo object
+}
+
+void loop() {
+  //int valSlot0 = digitalRead(A0);  // read the input on analog pin 0:
+  int valSlot0 = digitalRead(A0); //temporary
+  int valSlot1 = digitalRead(A1);
+  int valSlot2 = digitalRead(A2);
+  int valSlot3 = digitalRead(A3);
+  int valSlot4 = digitalRead(A4);
+  
+if(valSlot0 == 1 || valSlot1 == 1 || valSlot2 == 1 || valSlot3 == 1 || valSlot4 == 1){
+  trigger = true;
+}
+
+if(trigger == true){
+    //Serial.println("On");
+    digitalWrite(13, HIGH);
+} else {
+  //Serial.println("Off");
+  digitalWrite(13, LOW);
+}
+
+if(valSlot0 == 1){ //if slot 0 active
+  if(valSlot1 == 0){ //check slot 1
+    pos = (start+(valChange*0)); 
+    
+  }
+  if(valSlot1 == 1){
+    pos = (start+(valChange*1));
+  }
+} else if(valSlot1 == 1){ //if slot 0 inactive and slot 1 active
+  if(valSlot2 == 0){ //check slot 2
+    pos = (start+(valChange*2));//pos
+  }
+  if(valSlot2 == 1){
+    pos = (start+(valChange*3));//pos
+  }
+} else if(valSlot2 == 1){ //if slot 0 & 1 inactive and slot 2 active
+  if(valSlot3 == 0){ //check slot 3
+    pos = (start+(valChange*4));//pos
+  }
+  if(valSlot3 == 1){
+    pos = (start+(valChange*5));//pos
+  }
+} else if(valSlot3 == 1){ //if slot 0 & 1 & 2 inactive and slot 3 active
+  if(valSlot4 == 0){ //check slot 4
+    pos = (start+(valChange*6));//pos
+  }
+  if(valSlot4 == 1){
+    pos = (start+(valChange*7));//pos
+  }} else if(valSlot4 == 1){ //if slot 0 & 1 & 2 & 3 inactive and slot 4 active
+    pos = (start+(valChange*8));//pos 
+  }
+  myservo.write(pos);
+  Serial.print(valSlot0);
+  Serial.print(" ");
+  Serial.print(valSlot1);
+  Serial.print(" ");
+  Serial.print(valSlot2);
+  Serial.print(" ");
+  Serial.print(valSlot3);
+  Serial.print(" ");
+  Serial.print(valSlot4);
+  Serial.print(" ");
+  Serial.println();
+}
