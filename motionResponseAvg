@@ -1,0 +1,82 @@
+#include <Servo.h>
+boolean trigger = false;
+float pos = 0;
+
+int valSlot0 = 0; 
+int valSlot1 = 0;
+int valSlot2 = 0;
+int valSlot3 = 0;
+int valSlot4 = 0;
+int val = 0;
+int count = 0;
+
+Servo myservo;  // create servo object to control a servo
+// twelve servo objects can be created on most boards
+
+void setup() {
+  Serial.begin(9600);
+  pinMode(A0, INPUT);
+  pinMode(A1, INPUT);
+  pinMode(A2, INPUT);
+  pinMode(A3, INPUT);
+  pinMode(A4, INPUT);
+  myservo.attach(9);  // attaches the servo on pin 9 to the servo object
+}
+
+void loop() {
+if(valSlot0 == 1 || valSlot1 == 1 || valSlot2 == 1 || valSlot3 == 1 || valSlot4 == 1){
+  trigger = true;
+}
+  
+  val = 0;
+  count = 0;
+  if(digitalRead(A0) == 0 && digitalRead(A1) == 0 && digitalRead(A2) == 0 && digitalRead(A3) == 0 && digitalRead(A5) == 0){
+    val+= 98;
+    count++;
+    
+  }
+  if(digitalRead(A0) == 1){
+    val+= 40;
+    count++;
+    
+  }
+  if(digitalRead(A1) == 1){
+    val+= 60;
+    count++;
+    
+  }
+  if(digitalRead(A2) == 1){
+    val+= 108;
+    count++;
+    
+  }
+  if(digitalRead(A3) == 1){
+    val+= 180;
+    count++;
+    
+  }
+  if(digitalRead(A4) == 1){
+    val+= 220;
+    count++;
+    
+  }
+
+  val = val / count;
+  myservo.write(val);
+  valSlot0 = digitalRead(A0);
+  valSlot1 = digitalRead(A1);
+  valSlot2 = digitalRead(A2);
+  valSlot3 = digitalRead(A3);
+  valSlot4 = digitalRead(A4);
+  Serial.print(valSlot0);
+  Serial.print(" ");
+  Serial.print(valSlot1);
+  Serial.print(" ");
+  Serial.print(valSlot2);
+  Serial.print(" ");
+  Serial.print(valSlot3);
+  Serial.print(" ");
+  Serial.print(valSlot4);
+  Serial.print(" ");
+  Serial.println();
+}
